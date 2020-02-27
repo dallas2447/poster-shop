@@ -31,7 +31,7 @@
         <div class="main container">
             <div class="products">
                 <div class="search-results">
-                    Found {{products.length}} results for search term <em>{{search}}</em>
+                    Found {{products.length}} results for search term <em>{{lastSearch}}</em>
                 </div>
                 <div v-for="product in products" class="product" v-bind:key="product.id">
                     <div>
