@@ -8,8 +8,8 @@ new Vue({
 		cart: [],
 		search: "cat",
 		lastSearch: "",
-        loading: false,
-        results: []
+		loading: false,
+		results: []
 	},
 	created: function() {
 		this.onSubmit();
@@ -48,9 +48,9 @@ new Vue({
 		onSubmit: function() {
 			this.products = [];
 			this.loading = true;
-			var path = `/search?q=${this.search}`;
+            var path = `/search?q=${this.search}`;
 			this.$http.get(path).then(function(response) {
-                this.results = response.body;
+				this.results = response.body;
 				this.products = response.body.slice(0, LOAD_NUM);
 				this.lastSearch = this.search;
 				this.loading = false;
