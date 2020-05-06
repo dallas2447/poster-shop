@@ -1,4 +1,5 @@
 var LOAD_NUM = 4;
+var watcher;
 
 new Vue({
 	el: "#app",
@@ -13,6 +14,17 @@ new Vue({
 	},
 	created: function() {
 		this.onSubmit();
+	},
+	updated: function(){
+		var sensor = document.querySelector('#product-list-bottom');
+		watcher = scrollMonitor.create(sensor);		
+		watcher.enterViewport(this.appendResults);
+	},
+	beforeUpdate: function(){
+		if(watcher) {
+			watcher.destroy()
+			watcher = null;
+		}
 	},
 	methods: {
 		addToCart: function(product) {
@@ -51,10 +63,16 @@ new Vue({
             var path = `/search?q=${this.search}`;
 			this.$http.get(path).then(function(response) {
 				this.results = response.body;
-				this.products = response.body.slice(0, LOAD_NUM);
 				this.lastSearch = this.search;
+				this.appendResults();
 				this.loading = false;
 			});
+		},
+		appendResults: function() {
+			if(this.products.length < this.results.length){
+				var toAppend = this.results.slice(this.products.length, LOAD_NUM + this.products.length);
+				this.products = this.products.concat(toAppend);
+			}
 		}
 	},
 	filters: {
@@ -63,3 +81,4 @@ new Vue({
 		}
 	}
 });
+
